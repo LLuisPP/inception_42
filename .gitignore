@@ -1,0 +1,15 @@
+.DS_Store
+Thumbs.db
+
+.env
+.vscode/
+.idea/
+*.swp
+
+*.log
+logs/
+
+data/
+
+wordpress_data/
+db_data/
