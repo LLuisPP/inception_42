@@ -7,6 +7,7 @@ RUN apt-get update && apt-get -y upgrade \
         curl wget \
         ca-certificates \
         bash \
+    && sed -i 's|^listen = .*|listen = 9000|' /etc/php/7.4/fpm/pool.d/www.conf \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /var/www/html \
@@ -23,4 +24,3 @@ WORKDIR /var/www/html
 EXPOSE 9000
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
