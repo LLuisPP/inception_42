@@ -1,22 +1,24 @@
 #!/bin/sh
 set -e
 
-# Create mysql runtime directory
 mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld
 
-# Initialize database if needed
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-    echo "Initializing MariaDB data directory..."
-    mariadb-install-db --user=mysql --ldata=/var/lib/mysql > /dev/null
+if [ ! -d /var/lib/mysql/mysql ]; then
+    echo "Initializing MariaDB database..."
+    mysql_install_db --user=mysql --ldata=/var/lib/mysql > /dev/null
 
-    echo "Configuring database..."
-    mysqld --user=mysql --bootstrap <<EOF
+    echo "Applying MariaDB configuration..."
+    mysqld --user=mysql --bootstrap <<-EOF
 FLUSH PRIVILEGES;
+
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
-CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
+
+CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
+
 CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
-GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
+GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';
+
 FLUSH PRIVILEGES;
 EOF
 fi

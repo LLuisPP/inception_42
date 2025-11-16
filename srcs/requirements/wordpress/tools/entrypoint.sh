@@ -1,14 +1,19 @@
 #!/bin/bash
-
 set -e
 
-echo "Waiting for MariaDB..."
-until mariadb -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "SELECT 1;" >/dev/null 2>&1; do
-    sleep 1
+cd /var/www/html
+
+until mariadb -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "SELECT 1" >/dev/null 2>&1; do
+    echo "MariaDB is not ready yet..."
+    sleep 2
 done
+
 echo "MariaDB is up."
 
-if [ ! -f /var/www/html/wp-config.php ]; then
+chown -R www-data:www-data /var/www/html
+
+# Si no hay WordPress instalado, lo instalamos
+if [ ! -f wp-config.php ] || [ ! -f wp-load.php ]; then
     echo "Downloading WordPress..."
     wp core download --allow-root
 
@@ -30,10 +35,9 @@ if [ ! -f /var/www/html/wp-config.php ]; then
     echo "Creating normal user..."
     wp user create "$WP_USER" "$WP_USER_EMAIL" --allow-root \
         --user_pass="$WP_USER_PASSWORD" \
-        --role=author
+        --role=author || true
 fi
 
 echo "Starting php-fpm..."
 mkdir -p /run/php
 exec php-fpm7.4 -F
-

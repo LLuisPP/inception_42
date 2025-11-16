@@ -2,7 +2,7 @@ FROM debian:bullseye
 
 RUN apt-get update && apt-get -y upgrade \
     && apt-get install -y \
-        php-fpm php-mysql \
+        php-fpm php-mysql php-cli \
         mariadb-client \
         curl wget \
         ca-certificates \
