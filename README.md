@@ -302,51 +302,67 @@ WP_USER_EMAIL=<user_email>
 
 ### Virtual Machines vs Docker
 
+<div align=center>
+
 ||Virtual Machines|Docker||
-|---|---|:---|---|
-|❌|Full OS per instance|Shares the host kernel|✅|
+|---|---|---|---|
+|◇|Full OS per instance|Shares the host kernel|◇|
 |❌|Heavy resource usage|Lightweight and efficient|✅|
 |❌|Slower boot time|Near-instant startup|✅|
-|✅|Hardware-level virtualization|OS-level virtualization|❌|
-|✅|Suitable for running different OS|Ideal for microservices|❌|
+|◇|Hardware-level virtualization|OS-level virtualization|◇|
+|❌|Suitable for running different OS|Ideal for microservices|✅|
 
+Docker is recommended when lightweight, fast, and reproducible service deployment is required, especially for microservice-based architectures where running a full operating system per service would be unnecessary overhead.
+</div>
 ---
 
 ### Secrets vs Environment Variables
 
+<div align=center>
+
 ||Secrets|Environment Variables||
-|---|---|:---|---|
+|---|---|---|---|
 |✅|Encrypted|Plain text|❌|
 |✅|Designed for sensitive data|Plain text configuration|❌|
 |✅|Access controlled per service|Accessible to all processes|❌|
-|❌|Not stored in images or repo|Often stored in .env|✅|
+|◇|Not stored in images or repo|Often stored in .env|◇|
 |✅|More secure for credentials|Intended for non-sensitive data|❌|
 |✅|Recommended for production secrets|Simpler but less secure|❌|
 
+Docker Secrets are recommended for managing sensitive information such as passwords and credentials, while environment variables should be reserved for non-sensitive configuration data.
+</div>
 ---
 
 ### Docker Network vs Host Network
 
+<div align=center>
+
 ||Docker Network|Host Network||
-|---|---|:---|---|
+|---|---|---|---|
 |✅|Isolated container networking|No network isolation|❌|
 |✅|Services communicate by name|Containers share host network|❌|
 |✅|Better security|Higher security risks|❌|
-|✅|Predictable and controlled|Harder to manage|❌|
+|◇|Predictable and controlled|Harder to manage|◇|
 |✅|Required by the subject|Explicitly forbidden|❌|
 
+Docker networks are recommended because they provide isolated, secure, and predictable communication between services, which is a mandatory requirement for this project.
+</div>
 ---
 
 ### Docker Volumes vs Bind Mounts
 
+<div align=center>
+  
 ||Docker Volumes|Bind Mounts||
-|---|---|:---|---|
+|---|---|---|---|
 |✅|Managed by Docker|Managed by host filesystem|❌|
 |✅|Portable across systems|Host-path dependent|❌|
-|✅|Safer for production|Mainly for development|✅|
+|◇|Safer for production|Mainly for development|◇|
 |✅|Easy backup and migration|Harder to maintain|❌|
 |✅|Recommended by the subject|Not recommended here|❌|
 
+Docker volumes are recommended for production environments because they ensure portable, reliable, and Docker-managed data persistence independent of the host filesystem structure.
+</div>
 ---
 
 ## AI Usage
