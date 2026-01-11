@@ -116,9 +116,10 @@ as required by the subject.
 ```
 
 ├── Makefile
+├── USER_DOC.md
+├── DEV_DOC.md
 ├── srcs/
 │   ├── docker-compose.yml
-│   ├── .env
 │   └── requirements/
 │       ├── mariadb/
 │       ├── nginx/
