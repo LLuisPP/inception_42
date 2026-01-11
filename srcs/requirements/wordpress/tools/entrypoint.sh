@@ -38,6 +38,9 @@ if [ ! -f wp-config.php ] || [ ! -f wp-load.php ]; then
         --role=author || true
 fi
 
+wp option update siteurl "https://$DOMAIN_NAME" --allow-root
+wp option update home "https://$DOMAIN_NAME" --allow-root
+
 echo "Starting php-fpm..."
 mkdir -p /run/php
 exec php-fpm7.4 -F
