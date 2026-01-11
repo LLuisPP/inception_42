@@ -114,30 +114,26 @@ as required by the subject.
 ## Project Structure
 
 ```
-.
+
 ├── Makefile
-├── secrets/
-│   ├── db_password.txt
-│   ├── db_root_password.txt
-│   └── credentials.txt
 ├── srcs/
 │   ├── docker-compose.yml
 │   ├── .env
 │   └── requirements/
 │       ├── mariadb/
 │       ├── nginx/
-│       ├── wordpress/
-│       └── bonus/
+│       └── wordpress/
+
 ```
 
-<img width="493" height="468" alt="inception_structure" src="https://github.com/user-attachments/assets/a96bf56f-6cba-4f32-8ccb-41f3141d7c96" />
+<img width="493" align=center height="468" alt="inception_structure" src="https://github.com/user-attachments/assets/a96bf56f-6cba-4f32-8ccb-41f3141d7c96" />
 
 
 Each service directory contains:
 - Dockerfile
-- Configuration files
-- Optional tools or entrypoint scripts
-
+- An entrypoint script
+Not all services require static configuration files.
+NGINX requires a custom configuration file, while MariaDB and WordPress are configured dynamically at runtime using environment variables and initialization scripts through the entrypoint, which keeps the setup simple, explicit, and compliant with the subject.
 
 
 ## Instructions
@@ -160,14 +156,14 @@ This command:
 - Creates Docker networks and volumes
 - Starts the full infrastructure
 
-<img width="1205" height="412" alt="Inceptionmake" src="https://github.com/user-attachments/assets/2d42b259-d056-495b-afe5-b01b3793aec0" />
+<img width="1205" align=center height="412" alt="Inceptionmake" src="https://github.com/user-attachments/assets/2d42b259-d056-495b-afe5-b01b3793aec0" />
 
 ### Stop Containers
 
 ```bash
 make down
 ```
-<img width="1216" height="185" alt="inceptionmakedown" src="https://github.com/user-attachments/assets/10ff1665-c5ad-4f65-aec5-857aa544ebd5" />
+<img width="1216" align=center height="185" alt="inceptionmakedown" src="https://github.com/user-attachments/assets/10ff1665-c5ad-4f65-aec5-857aa544ebd5" />
 
 
 ### Rebuild Everything
@@ -176,7 +172,7 @@ make down
 make re
 ```
 
-<img width="1182" height="621" alt="inceptionmakere" src="https://github.com/user-attachments/assets/ef1f2c16-8487-4933-9363-e238b41841aa" />
+<img width="1182" align=center height="621" alt="inceptionmakere" src="https://github.com/user-attachments/assets/ef1f2c16-8487-4933-9363-e238b41841aa" />
 
 
 ---
