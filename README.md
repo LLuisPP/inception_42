@@ -1,0 +1,383 @@
+*This project has been created as part of the 42 curriculum by lprieto-.*
+
+# Inception
+
+## Description
+
+**Inception** is a system administration project from the 42 curriculum designed to provide a deep and practical understanding of **Docker**, **Docker Compose**, and modern container-based infrastructures.
+
+The objective of the project is not only to run services inside containers, but to **understand why Docker is used, how it works internally, and which problems it solves** compared to traditional virtualization or monolithic setups.
+
+The project deploys a complete and secure **WordPress infrastructure**, fully containerized, running inside a **Virtual Machine**, and respecting strict rules regarding security, networking, persistence, and configuration.
+
+---
+
+## Why Docker?
+
+Docker is used in this project because it provides:
+
+- **Service isolation**  
+  Each service runs in its own container with its own filesystem, processes, and configuration.
+
+- **Reproducibility**  
+  The infrastructure can be rebuilt at any time in an identical state.
+
+- **Lightweight virtualization**  
+  Containers share the host kernel, unlike virtual machines, making them faster and more resource-efficient.
+
+- **Explicit dependencies**  
+  Each service declares exactly what it needs through its Dockerfile.
+
+- **Controlled networking**  
+  Services communicate only through defined Docker networks.
+
+---
+
+## Docker Functionalities Used
+
+This project makes use of several core Docker features:
+
+- **Dockerfiles**  
+  Custom images are built from Alpine or Debian base images.
+
+- **Docker Compose**  
+  Orchestrates multi-container setup, networking, volumes, and restart policies.
+
+- **Docker Networks**  
+  Isolates internal traffic and allows service-name-based communication.
+
+- **Docker Volumes**  
+  Ensures data persistence across container restarts and rebuilds.
+
+- **Environment Variables & Secrets**  
+  Externalize configuration and protect sensitive data.
+
+- **Restart Policies**  
+  Containers restart automatically in case of failure.
+
+---
+
+## Architecture Overview
+
+The infrastructure is composed of three mandatory services, each running in its own container.
+
+### NGINX
+- Single public entry point
+- Exposes HTTPS on port **443**
+- Uses **TLSv1.2 or TLSv1.3 only**
+- Proxies requests to WordPress (PHP-FPM)
+- No PHP or database installed
+
+### WordPress + PHP-FPM
+- Runs WordPress using PHP-FPM only
+- No embedded web server
+- Receives traffic only from NGINX
+- WordPress files stored in a persistent volume
+
+### MariaDB
+- Database backend for WordPress
+- No web server or unnecessary services
+- Data stored in a dedicated volume
+- Initialized using environment variables and/or secrets
+
+---
+
+## Docker Networking
+
+A **custom Docker network** connects all containers.
+
+- Containers resolve each other using **service names**
+- No usage of `network: host`, `--link`, or `links`
+- Only NGINX exposes a port to the host
+- Internal ports remain private
+
+This ensures proper isolation and security.
+
+---
+
+## Data Persistence
+
+Two Docker volumes are used:
+
+- **WordPress volume**  
+  Persists `/var/www/html`
+
+- **MariaDB volume**  
+  Persists database files
+
+Volumes are mounted under:
+
+```
+/home/<login>/data
+```
+
+as required by the subject.
+
+---
+
+## Project Structure
+
+```
+.
+├── Makefile
+├── secrets/
+│   ├── db_password.txt
+│   ├── db_root_password.txt
+│   └── credentials.txt
+├── srcs/
+│   ├── docker-compose.yml
+│   ├── .env
+│   └── requirements/
+│       ├── mariadb/
+│       ├── nginx/
+│       ├── wordpress/
+│       └── bonus/
+```
+
+<img width="493" height="468" alt="inception_structure" src="https://github.com/user-attachments/assets/a96bf56f-6cba-4f32-8ccb-41f3141d7c96" />
+
+
+Each service directory contains:
+- Dockerfile
+- Configuration files
+- Optional tools or entrypoint scripts
+
+---
+
+## Instructions
+
+### Requirements
+
+- Linux Virtual Machine
+- Docker
+- Docker Compose
+- Make
+
+### Build and Start the Project
+
+```bash
+make
+```
+
+This command:
+- Builds all images from scratch
+- Creates Docker networks and volumes
+- Starts the full infrastructure
+
+<img width="1205" height="412" alt="Inceptionmake" src="https://github.com/user-attachments/assets/2d42b259-d056-495b-afe5-b01b3793aec0" />
+
+### Stop Containers
+
+```bash
+make down
+```
+<img width="1216" height="185" alt="inceptionmakedown" src="https://github.com/user-attachments/assets/10ff1665-c5ad-4f65-aec5-857aa544ebd5" />
+
+
+### Rebuild Everything
+
+```bash
+make re
+```
+
+<img width="1182" height="621" alt="inceptionmakere" src="https://github.com/user-attachments/assets/ef1f2c16-8487-4933-9363-e238b41841aa" />
+
+
+---
+
+## Peer Evaluation – Testing Commands
+
+These commands are commonly used during **peer evaluation** to verify correctness.
+
+### Check running containers
+
+```bash
+docker ps
+```
+
+### Check images built locally (no forbidden images)
+
+```bash
+docker images
+```
+
+### Inspect Docker network
+
+```bash
+docker network ls
+docker network inspect inception_network
+```
+
+### Verify volumes
+
+```bash
+docker volume ls
+docker volume inspect wordpress_data
+docker volume inspect mariadb_data
+```
+
+### Check logs
+
+```bash
+docker logs nginx
+docker logs wordpress
+docker logs mariadb
+```
+
+### Access containers
+
+```bash
+docker exec -it nginx sh
+docker exec -it wordpress sh
+docker exec -it mariadb sh
+```
+
+### Verify TLS
+
+```bash
+openssl s_client -connect <login>.42.fr:443
+```
+
+### Verify WordPress database connection
+
+```bash
+docker exec -it mariadb mariadb -u <db_user> -p
+```
+
+### Restart containers (crash recovery test)
+
+```bash
+docker stop wordpress
+docker ps
+```
+
+Container should restart automatically.
+
+---
+
+## Environment Variables and Secrets
+
+### Environment Variables
+Stored in `.env`:
+`````
+MYSQL_HOST=mariadb
+MYSQL_DATABASE=wordpress
+MYSQL_ROOT_PASSWORD=rootsql
+MYSQL_USER=wpuser
+MYSQL_PASSWORD=wppass
+
+DOMAIN_NAME=lprieto-.42.fr
+WP_TITLE=Inception
+
+WP_ADMIN=lprieto-42
+WP_ADMIN_PASSWORD=luispass123
+WP_ADMIN_EMAIL=luisadmin@example.com
+
+WP_USER=luis
+WP_USER_PASSWORD=luispass123
+WP_USER_EMAIL=luis@example.com
+`````
+
+- Domain name
+- Database name
+- Database user
+- WordPress configuration
+
+### Secrets
+- Passwords are stored in `secrets/`
+- Never hardcoded
+- Never committed to git
+- Can be mounted as Docker secrets
+
+---
+
+## Mandatory Comparisons
+
+### Virtual Machines vs Docker
+
+**Virtual Machines**
+- Full OS per instance
+- Heavy resource usage
+- Slower startup
+
+**Docker**
+- Lightweight containers
+- Fast startup
+- Shared kernel
+
+---
+
+### Secrets vs Environment Variables
+
+**Secrets**
+- Encrypted
+- Scoped
+- Secure for credentials
+
+**Environment Variables**
+- Plain text
+- Simple
+- For non-sensitive data
+
+---
+
+### Docker Network vs Host Network
+
+**Docker Network**
+- Isolated
+- Secure
+- Predictable
+
+**Host Network**
+- No isolation
+- Security risks
+
+---
+
+### Docker Volumes vs Bind Mounts
+
+**Docker Volumes**
+- Docker-managed
+- Portable
+- Production-safe
+
+**Bind Mounts**
+- Host-dependent
+- Development-oriented
+
+---
+
+## AI Usage
+
+AI tools were used to:
+- Clarify Docker concepts
+- Help structure documentation
+- Summarize official documentation
+
+All generated content was reviewed, understood, and validated by the author.
+
+---
+
+## Resources
+
+- Docker Documentation  
+  https://docs.docker.com/
+
+- Docker Compose  
+  https://docs.docker.com/compose/
+
+- NGINX  
+  https://nginx.org/en/docs/
+
+- WordPress  
+  https://wordpress.org/documentation/
+
+---
+
+## Notes
+
+- No pre-built images were used
+- `latest` tag is forbidden and not used
+- Containers restart automatically
+- NGINX is the only public entry point
+- No infinite loops or hacky entrypoints
