@@ -193,6 +193,17 @@ These commands are commonly used during **peer evaluation** to verify correctnes
 
 ```bash
 docker ps
+docker images
+docker network ls
+docker volume ls
+docker logs nginx
+docker logs wordpress
+docker logs mariadb
+docker exec -it nginx sh
+docker exec -it wordpress sh
+docker exec -it mariadb sh
+openssl s_client -connect <login>.42.fr:443
+
 ```
 
 ### Check images built locally (no forbidden images)
@@ -262,20 +273,16 @@ Stored in `.env`:
 `````
 MYSQL_HOST=mariadb
 MYSQL_DATABASE=wordpress
-MYSQL_ROOT_PASSWORD=rootsql
 MYSQL_USER=wpuser
-MYSQL_PASSWORD=wppass
 
-DOMAIN_NAME=lprieto-.42.fr
+DOMAIN_NAME=<login>.42.fr
 WP_TITLE=Inception
 
-WP_ADMIN=lprieto-42
-WP_ADMIN_PASSWORD=luispass123
-WP_ADMIN_EMAIL=luisadmin@example.com
+WP_ADMIN=<admin_user>
+WP_ADMIN_EMAIL=<admin_email>
 
-WP_USER=luis
-WP_USER_PASSWORD=luispass123
-WP_USER_EMAIL=luis@example.com
+WP_USER=<user>
+WP_USER_EMAIL=<user_email>
 `````
 
 - Domain name
@@ -381,3 +388,27 @@ All generated content was reviewed, understood, and validated by the author.
 - Containers restart automatically
 - NGINX is the only public entry point
 - No infinite loops or hacky entrypoints
+
+
+
+
+`````
+
+MYSQL_HOST=mariadb
+MYSQL_DATABASE=wordpress
+MYSQL_ROOT_PASSWORD=rootsql
+MYSQL_USER=wpuser
+MYSQL_PASSWORD=wppass
+
+DOMAIN_NAME=lprieto-.42.fr
+WP_TITLE=Inception
+
+WP_ADMIN=lprieto-42
+WP_ADMIN_PASSWORD=luispass123
+WP_ADMIN_EMAIL=luisadmin@example.com
+
+WP_USER=luis
+WP_USER_PASSWORD=luispass123
+WP_USER_EMAIL=luis@example.com
+
+`````
