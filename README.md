@@ -10,7 +10,6 @@ The objective of the project is not only to run services inside containers, but 
 
 The project deploys a complete and secure **WordPress infrastructure**, fully containerized, running inside a **Virtual Machine**, and respecting strict rules regarding security, networking, persistence, and configuration.
 
----
 
 ## Why Docker?
 
@@ -31,7 +30,6 @@ Docker is used in this project because it provides:
 - **Controlled networking**  
   Services communicate only through defined Docker networks.
 
----
 
 ## Docker Functionalities Used
 
@@ -55,7 +53,6 @@ This project makes use of several core Docker features:
 - **Restart Policies**  
   Containers restart automatically in case of failure.
 
----
 
 ## Architecture Overview
 
@@ -80,7 +77,7 @@ The infrastructure is composed of three mandatory services, each running in its 
 - Data stored in a dedicated volume
 - Initialized using environment variables and/or secrets
 
----
+
 
 ## Docker Networking
 
@@ -93,7 +90,6 @@ A **custom Docker network** connects all containers.
 
 This ensures proper isolation and security.
 
----
 
 ## Data Persistence
 
@@ -142,7 +138,7 @@ Each service directory contains:
 - Configuration files
 - Optional tools or entrypoint scripts
 
----
+
 
 ## Instructions
 
@@ -264,7 +260,6 @@ docker ps
 
 Container should restart automatically.
 
----
 
 ## Environment Variables and Secrets
 
@@ -296,7 +291,7 @@ WP_USER_EMAIL=<user_email>
 - Never committed to git
 - Can be mounted as Docker secrets
 
----
+
 
 ## Mandatory Comparisons
 
@@ -314,7 +309,7 @@ WP_USER_EMAIL=<user_email>
 
 Docker is recommended when lightweight, fast, and reproducible service deployment is required, especially for microservice-based architectures where running a full operating system per service would be unnecessary overhead.
 </div>
----
+
 
 ### Secrets vs Environment Variables
 
@@ -331,7 +326,7 @@ Docker is recommended when lightweight, fast, and reproducible service deploymen
 
 Docker Secrets are recommended for managing sensitive information such as passwords and credentials, while environment variables should be reserved for non-sensitive configuration data.
 </div>
----
+
 
 ### Docker Network vs Host Network
 
@@ -347,7 +342,7 @@ Docker Secrets are recommended for managing sensitive information such as passwo
 
 Docker networks are recommended because they provide isolated, secure, and predictable communication between services, which is a mandatory requirement for this project.
 </div>
----
+
 
 ### Docker Volumes vs Bind Mounts
 
@@ -363,7 +358,7 @@ Docker networks are recommended because they provide isolated, secure, and predi
 
 Docker volumes are recommended for production environments because they ensure portable, reliable, and Docker-managed data persistence independent of the host filesystem structure.
 </div>
----
+
 
 ## AI Usage
 
@@ -374,7 +369,6 @@ AI tools were used to:
 
 All generated content was reviewed, understood, and validated by the author.
 
----
 
 ## Resources
 
@@ -390,7 +384,6 @@ All generated content was reviewed, understood, and validated by the author.
 - WordPress  
   https://wordpress.org/documentation/
 
----
 
 ## Notes
 
