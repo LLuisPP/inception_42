@@ -302,55 +302,50 @@ WP_USER_EMAIL=<user_email>
 
 ### Virtual Machines vs Docker
 
-**Virtual Machines**
-- Full OS per instance
-- Heavy resource usage
-- Slower startup
-
-**Docker**
-- Lightweight containers
-- Fast startup
-- Shared kernel
+||Virtual Machines|Docker||
+|---|---|:---|---|
+|❌|Full OS per instance|Shares the host kernel|✅|
+|❌|Heavy resource usage|Lightweight and efficient|✅|
+|❌|Slower boot time|Near-instant startup|✅|
+|✅|Hardware-level virtualization|OS-level virtualization|❌|
+|✅|Suitable for running different OS|Ideal for microservices|❌|
 
 ---
 
 ### Secrets vs Environment Variables
 
-**Secrets**
-- Encrypted
-- Scoped
-- Secure for credentials
-
-**Environment Variables**
-- Plain text
-- Simple
-- For non-sensitive data
+||Secrets|Environment Variables||
+|---|---|:---|---|
+|✅|Encrypted|Plain text|❌|
+|✅|Designed for sensitive data|Plain text configuration|❌|
+|✅|Access controlled per service|Accessible to all processes|❌|
+|❌|Not stored in images or repo|Often stored in .env|✅|
+|✅|More secure for credentials|Intended for non-sensitive data|❌|
+|✅|Recommended for production secrets|Simpler but less secure|❌|
 
 ---
 
 ### Docker Network vs Host Network
 
-**Docker Network**
-- Isolated
-- Secure
-- Predictable
-
-**Host Network**
-- No isolation
-- Security risks
+||Docker Network|Host Network||
+|---|---|:---|---|
+|✅|Isolated container networking|No network isolation|❌|
+|✅|Services communicate by name|Containers share host network|❌|
+|✅|Better security|Higher security risks|❌|
+|✅|Predictable and controlled|Harder to manage|❌|
+|✅|Required by the subject|Explicitly forbidden|❌|
 
 ---
 
 ### Docker Volumes vs Bind Mounts
 
-**Docker Volumes**
-- Docker-managed
-- Portable
-- Production-safe
-
-**Bind Mounts**
-- Host-dependent
-- Development-oriented
+||Docker Volumes|Bind Mounts||
+|---|---|:---|---|
+|✅|Managed by Docker|Managed by host filesystem|❌|
+|✅|Portable across systems|Host-path dependent|❌|
+|✅|Safer for production|Mainly for development|✅|
+|✅|Easy backup and migration|Harder to maintain|❌|
+|✅|Recommended by the subject|Not recommended here|❌|
 
 ---
 
